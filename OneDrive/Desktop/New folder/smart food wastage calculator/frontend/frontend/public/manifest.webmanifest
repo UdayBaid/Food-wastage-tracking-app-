@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "FoodWise Waste Tracker",
+  "short_name": "FoodWise",
+  "description": "Local food waste tracking and meal planning.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f5ef",
+  "theme_color": "#f6f3eb",
+  "icons": [
+    {
+      "src": "/icons/foodwise.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

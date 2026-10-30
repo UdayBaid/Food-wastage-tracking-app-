@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f3eb" />
+    <title>FoodWise is offline</title>
+    <style>
+      :root { color-scheme: light; font-family: "Segoe UI", "Trebuchet MS", sans-serif; color: #302f29; background: #f7f5ef; }
+      * { box-sizing: border-box; }
+      body { display: grid; min-height: 100vh; margin: 0; place-items: center; padding: 24px; }
+      main { width: min(100%, 440px); padding: 34px; background: #fffefa; border: 1px solid #e7e2d7; border-radius: 8px; text-align: center; }
+      img { width: 58px; height: 58px; }
+      h1 { margin: 20px 0 8px; font: 400 30px Georgia, "Times New Roman", serif; }
+      p { color: #827f74; font-size: 14px; line-height: 1.65; }
+      button { min-height: 42px; margin-top: 16px; padding: 0 17px; color: white; background: #c95740; border: 0; border-radius: 5px; font: 600 13px "Segoe UI", sans-serif; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/icons/foodwise.svg" alt="FoodWise" />
+      <h1>You're offline</h1>
+      <p>The FoodWise app shell is available from this device. Reconnect to the local FoodWise service to load or change kitchen data.</p>
+      <button onclick="location.reload()">Try again</button>
+    </main>
+  </body>
+</html>
