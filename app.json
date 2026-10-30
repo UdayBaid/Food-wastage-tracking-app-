@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "FoodWise",
+    "slug": "foodwise-mobile",
+    "scheme": "foodwise",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.foodwise.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#F7F5EF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "FoodWise uses the camera to capture meal photos. Photos are not uploaded automatically."
+        }
+      ],
+      "expo-sqlite",
+      "expo-secure-store",
+      "expo-sharing",
+      "onnxruntime-react-native",
+      "expo-asset",
+      "./plugins/with-android-cleartext-traffic"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f22a561d-0cc5-428d-838b-836881f90dbb"
+      }
+    },
+    "owner": "udot029"
+  }
+}

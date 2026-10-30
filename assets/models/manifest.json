@@ -1,0 +1,70 @@
+{
+  "format": "ONNX",
+  "runtime": "onnxruntime-react-native",
+  "source": "Existing FoodWise sklearn pipelines; no retraining",
+  "models": {
+    "baseline": {
+      "file": "foodwise_baseline.onnx",
+      "bytes": 9942140,
+      "features": [
+        "meal_category",
+        "residents_present",
+        "student_turnout",
+        "hostel_capacity",
+        "day_of_week",
+        "month",
+        "is_weekend"
+      ],
+      "rows_validated": 128,
+      "max_abs_error": 3.348143206238774e-06,
+      "absolute_tolerance": 0.0001,
+      "target_opset": 17,
+      "meal_category_required": true
+    },
+    "optimization": {
+      "file": "foodwise_optimization.onnx",
+      "bytes": 7243404,
+      "features": [
+        "meal_category",
+        "student_turnout",
+        "residents_present",
+        "hostel_capacity",
+        "advance_bookings",
+        "menu_popularity_score",
+        "food_prepared_kg",
+        "day_of_week",
+        "month",
+        "weekend_flag",
+        "exam_flag",
+        "vacation_flag",
+        "festival_flag",
+        "special_event_flag",
+        "temperature_c",
+        "rain_index"
+      ],
+      "rows_validated": 128,
+      "max_abs_error": 3.226381263488065e-06,
+      "absolute_tolerance": 0.0001,
+      "target_opset": 17,
+      "meal_category_required": true
+    },
+    "semi_supervised": {
+      "file": "foodwise_semi_supervised.onnx",
+      "bytes": 8450225,
+      "features": [
+        "meal_category",
+        "residents_present",
+        "student_turnout",
+        "hostel_capacity",
+        "day_of_week",
+        "month",
+        "is_weekend"
+      ],
+      "rows_validated": 128,
+      "max_abs_error": 3.5983495330071946e-06,
+      "absolute_tolerance": 0.0001,
+      "target_opset": 17,
+      "meal_category_required": true
+    }
+  }
+}
