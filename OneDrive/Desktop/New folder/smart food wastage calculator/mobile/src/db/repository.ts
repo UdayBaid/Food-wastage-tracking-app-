@@ -13,6 +13,13 @@ import type {
 
 const nowIso = () => new Date().toISOString();
 const nullable = (value: number | string | null | undefined) => value ?? null;
+const RECORD_COLUMNS = [
+  'id', 'record_id', 'server_id', 'date', 'year', 'month', 'day_of_week', 'day_name', 'meal_category', 'menu_name',
+  'hostel_capacity', 'residents_present', 'advance_bookings', 'weekend_flag', 'exam_flag', 'vacation_flag',
+  'festival_flag', 'special_event_flag', 'temperature_c', 'rain_index', 'menu_popularity_score', 'student_turnout',
+  'avg_consumed_per_student_kg', 'food_consumed_kg', 'food_prepared_kg', 'food_wasted_kg', 'waste_percentage',
+  'estimated_waste_cost_inr', 'updated_at', 'synced_at', 'sync_state', 'base_snapshot', 'conflict_snapshot', 'deleted',
+] as const;
 
 function queueRecord(database: SQLiteDatabase, entityId: string, operation: string, queuedAt: string) {
   return database.runAsync(
@@ -249,16 +256,34 @@ export async function restoreBackupData(database: SQLiteDatabase, payload: unkno
   if (backup.app !== 'FoodWise' || backup.schemaVersion !== 1 || !Array.isArray(backup.records) || !Array.isArray(backup.predictions) || !Array.isArray(backup.optimizations)) {
     throw new Error('Backup format or schema version is not supported.');
   }
+  const allowedColumns = new Set<string>(RECORD_COLUMNS);
+  const recordIds = new Set<string>();
+  const externalIds = new Set<string>();
   for (const record of backup.records) {
     if (!record.id || !record.record_id || !record.date || !['Breakfast', 'Lunch', 'Dinner'].includes(record.meal_category)) {
       throw new Error('Backup contains an invalid food record. No data was changed.');
+    }
+    if (Object.keys(record).some((key) => !allowedColumns.has(key))) {
+      throw new Error('Backup contains unknown food record fields. No data was changed.');
+    }
+    if (recordIds.has(record.id) || externalIds.has(record.record_id)) {
+      throw new Error('Backup contains duplicate food record identifiers. No data was changed.');
+    }
+    recordIds.add(record.id);
+    externalIds.add(record.record_id);
+    if (record.food_prepared_kg != null && record.food_consumed_kg != null && record.food_wasted_kg != null
+      && record.food_consumed_kg + record.food_wasted_kg > record.food_prepared_kg) {
+      throw new Error('Backup contains food quantities where consumed plus wasted exceeds prepared. No data was changed.');
+    }
+    if (!['local', 'pending', 'synced', 'conflict', 'pending-delete'].includes(record.sync_state)) {
+      throw new Error('Backup contains an unsupported synchronization state. No data was changed.');
     }
   }
 
   await database.withTransactionAsync(async () => {
     await database.execAsync('DELETE FROM sync_queue; DELETE FROM food_records; DELETE FROM prediction_history; DELETE FROM optimization_history;');
     for (const record of backup.records ?? []) {
-      const columns = Object.keys(record) as Array<keyof FoodRecord>;
+      const columns = RECORD_COLUMNS.filter((column) => column in record) as Array<keyof FoodRecord>;
       const placeholders = columns.map(() => '?').join(',');
       await database.runAsync(
         `INSERT INTO food_records(${columns.join(',')}) VALUES (${placeholders})`,

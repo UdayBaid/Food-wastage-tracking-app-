@@ -1,10 +1,9 @@
 from pathlib import Path
 import pandas as pd
 
-# Define base directory (smart food wastage calculator project root)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Search for the dataset across possible folder locations and extensions
 possible_paths = [
     BASE_DIR / "data" / "hostel_food_waste.csv",
     BASE_DIR / "dataset" / "hostel_food_waste.csv.xls",

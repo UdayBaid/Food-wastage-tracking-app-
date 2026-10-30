@@ -59,7 +59,7 @@ The app always reads/writes local SQLite and runs local inference first. To sync
 C:\Python314\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8002
 ```
 
-In the app, open **More → About & local data**, enter the computer's LAN address, for example `http://192.168.1.20:8002`, save it, and check the server. Find the computer address with `ipconfig`. The phone and computer must have local network reachability; internet access is not needed. Production deployments should use HTTPS or a restricted/trusted local network; do not expose the development API publicly.
+In the app, open **More → About & local data**, enter the computer's LAN address, for example `http://192.168.1.20:8002`, save it, and check the server. Find the computer address with `ipconfig`. The phone and computer must have local network reachability; internet access is not needed. Android permits cleartext traffic so the existing HTTP-only development API can be reached; configure only a trusted LAN URL. Production shared servers should use HTTPS, and the development API must not be exposed publicly.
 
 The URL may also be supplied through `.env` as `EXPO_PUBLIC_API_BASE_URL`; an in-app override is stored in Expo SecureStore. Do not put credentials in the public Expo environment.
 
@@ -95,5 +95,6 @@ Before release, run the app on a physical Android device, create/edit/delete rec
 
 - Physical Android installation, native ONNX Runtime execution on Android, APK/AAB generation, and physical-network-offline tests remain unverified in the current environment because the Android SDK/ADB and device are absent.
 - ONNX/Python parity has passed on this Windows host, but must be confirmed on-device before production.
+- `npm audit` reports 8 advisories (5 low, 3 high) in the Expo dependency/tooling graph. npm's proposed forced fix downgrades Expo to SDK 51, so no forced downgrade was applied; review a compatible Expo patch before publishing.
 - Android HTTP sync to an arbitrary LAN IP depends on Android cleartext/network policy and LAN security. For production, configure authenticated HTTPS on a trusted local server.
 - No image classifier, scale integration, blockchain audit, or cloud authentication is included.

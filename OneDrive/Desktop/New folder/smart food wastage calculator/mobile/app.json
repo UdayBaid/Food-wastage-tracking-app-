@@ -12,6 +12,7 @@
     },
     "android": {
       "package": "com.foodwise.mobile",
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "backgroundColor": "#F7F5EF",
         "foregroundImage": "./assets/android-icon-foreground.png",
