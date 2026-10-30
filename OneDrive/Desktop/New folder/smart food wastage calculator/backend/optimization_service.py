@@ -1,6 +1,9 @@
 
 from functools import lru_cache
 
+from sqlalchemy.orm import Session
+
+from backend.database.models import OptimizationLog
 from module.optimization import (
     load_optimization_model,
     recommend_preparation,
@@ -12,7 +15,7 @@ def get_optimization_model():
     return load_optimization_model()
 
 
-def optimize_preparation(data):
+def optimize_preparation(data, db: Session | None = None):
     model = get_optimization_model()
 
     results = recommend_preparation(
@@ -38,11 +41,27 @@ def optimize_preparation(data):
     )
 
     best = results.iloc[0].to_dict()
-
-    return {
+    response = {
         "recommended_preparation_kg": best["prepared_kg"],
         "predicted_waste_kg": best["predicted_waste_kg"],
         "estimated_shortage_kg": best["estimated_shortage_kg"],
         "estimated_penalty_cost": best["estimated_penalty_cost"],
         "top_options": results.head(5).to_dict(orient="records"),
     }
+
+    if db is not None:
+        db.add(OptimizationLog(
+            meal_category=data.meal_category,
+            expected_demand_kg=data.expected_demand_kg,
+            recommended_preparation_kg=float(best["prepared_kg"]),
+            predicted_waste_kg=float(best["predicted_waste_kg"]),
+            estimated_shortage_kg=float(best["estimated_shortage_kg"]),
+            estimated_penalty_cost=float(best["estimated_penalty_cost"]),
+        ))
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+
+    return response

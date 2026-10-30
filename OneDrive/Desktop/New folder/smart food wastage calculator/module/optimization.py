@@ -143,10 +143,12 @@ def recommend_preparation(
     if expected_demand_kg <= 0:
         raise ValueError("Expected demand must be greater than zero.")
 
-    candidates = np.arange(
-        max(1.0, expected_demand_kg * 0.70),
-        expected_demand_kg * 1.31,
-        0.5,
+    candidate_start = max(1.0, expected_demand_kg * 0.70)
+    candidate_stop = expected_demand_kg * 1.31
+    candidates = (
+        np.arange(candidate_start, candidate_stop, 0.5)
+        if candidate_start < candidate_stop
+        else np.array([candidate_start])
     )
 
     options = []
