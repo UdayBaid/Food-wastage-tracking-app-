@@ -1,0 +1,26 @@
+{
+  "validation": {
+    "baseline": {
+      "MAE": 5.2452,
+      "RMSE": 6.9128,
+      "R2": 0.457
+    },
+    "semi_supervised": {
+      "MAE": 5.1786,
+      "RMSE": 6.8545,
+      "R2": 0.4661
+    }
+  },
+  "test": {
+    "baseline": {
+      "MAE": 6.1657,
+      "RMSE": 8.0531,
+      "R2": 0.29
+    },
+    "semi_supervised": {
+      "MAE": 6.1941,
+      "RMSE": 8.0283,
+      "R2": 0.2944
+    }
+  }
+}
